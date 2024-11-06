@@ -76,3 +76,15 @@ vim.api.nvim_set_keymap('i', '<leader>log', 'console.log()<Left>', { noremap = t
 
 
 
+vim.api.nvim_create_user_command('ToggleLineNrColor', function()
+  local pink = '#E698FF'
+  local blue = '#12525D'
+  local current_hl = vim.api.nvim_get_hl_by_name('LineNr', true)
+
+  if current_hl.foreground == tonumber(pink:sub(2), 16) then
+    vim.api.nvim_set_hl(0, 'LineNr', { fg = blue })
+  else
+    vim.api.nvim_set_hl(0, 'LineNr', { fg = pink })
+  end
+end
+, {})

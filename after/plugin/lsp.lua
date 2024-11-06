@@ -139,3 +139,31 @@ vim.fn.sign_define("DiagnosticSignError", { text = "✘", texthl = "DiagnosticSi
 vim.fn.sign_define("DiagnosticSignWarn", { text = "▲", texthl = "DiagnosticSignWarn" })
 vim.fn.sign_define("DiagnosticSignInfo", { text = "»", texthl = "DiagnosticSignInfo" })
 vim.fn.sign_define("DiagnosticSignHint", { text = "⚑", texthl = "DiagnosticSignHint" })
+
+
+
+
+vim.api.nvim_create_user_command('ToggleEslint', function()
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
+  local eslint_client
+
+  for _, client in ipairs(clients) do
+    if client.name == "eslint" then
+      eslint_client = client
+      break
+    end
+  end
+
+  if eslint_client then
+    vim.lsp.stop_client(eslint_client.id)
+    print("ESLint disabled for buffer " .. bufnr)
+  else
+    require('lspconfig').eslint.setup {}
+    vim.lsp.start_client(vim.tbl_deep_extend("force", require('lspconfig').eslint.document_config, {
+      root_dir = vim.loop.cwd(),
+    }))
+    print("ESLint enabled for buffer " .. bufnr)
+  end
+end, {})
