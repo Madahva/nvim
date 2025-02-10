@@ -11,7 +11,8 @@ return require('packer').startup(function(use)
   use('echasnovski/mini.indentscope')
   use('karb94/neoscroll.nvim')
   use('edluffy/specs.nvim')
-use('j-hui/fidget.nvim')
+  use('j-hui/fidget.nvim')
+
   -- File Navigation
   use {
     ('nvim-telescope/telescope.nvim'), tag = '0.1.8',
